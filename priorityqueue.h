@@ -22,6 +22,7 @@ class PriorityQueue {
     size_t Parent(size_t i);
     size_t LeftChild(size_t i);
     size_t RightChild(size_t i);
+    void swap(int kv1, int kv2);
 
 private:
     void heapifyUp(size_t i);

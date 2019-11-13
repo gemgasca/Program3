@@ -13,6 +13,12 @@ size_t PriorityQueue::RightChild(size_t i) {   // returns right child
     return 2 * i + 1;
 }
 
+void PriorityQueue::swap(int kv1, int kv2) {
+    KeyValuePair temp = nodes_[kv1];
+    nodes_[kv1] = nodes_[kv2];
+    nodes_[kv2] = temp;
+}
+
 PriorityQueue::PriorityQueue(std::size_t max_size) :
         nodes_(max_size + 1, KeyValuePair()),
         max_size_(max_size),
@@ -81,7 +87,7 @@ nlohmann::json PriorityQueue::JSON() const {
     return result;
 }
 
-void PriorityQueue::heapifyUp(size_t i) {
+void PriorityQueue::heapifyUp2(size_t i) {
     // TODO: complete this function
     int next_up = i - 1;
     while (nodes_[i].second < nodes_[next_up].second){
@@ -93,6 +99,17 @@ void PriorityQueue::heapifyUp(size_t i) {
     }
 }
 
+void PriorityQueue::heapifyUp(size_t i) {
+    // TODO: complete this function
+    while(i > 0){
+        int Parent  = 1/2;
+        if (nodes_[Parent] > nodes_[i]){
+            swap(Parent, i);
+        }
+        i--;
+    }
+}
+
 void PriorityQueue::heapifyDown(size_t i) {
     // TODO: complete this function
     while(i < size_) {
@@ -100,30 +117,14 @@ void PriorityQueue::heapifyDown(size_t i) {
         int RightChild = 2 * i + 1;
         if (nodes_[LeftChild] < nodes_[RightChild]) {       // left child smaller, heapify down that branch
             if (nodes_[LeftChild] < nodes_[i]) {
-                KeyValuePair temp = nodes_[LeftChild];
-                nodes_[LeftChild] = nodes_[i];
-                nodes_[i] = temp;
+                swap(LeftChild, i);
             }
-        } else {       // right child smaller, heapify down that branch
+        } else {                                            // right child smaller, heapify down that branch
             if (nodes_[RightChild] < nodes_[i]) {
-                KeyValuePair temp = nodes_[RightChild];
-                nodes_[RightChild] = nodes_[i];
-                nodes_[i] = temp;
+                swap(RightChild, i);
             }
         }
         i++;
-    }
-}
-
-void PriorityQueue::heapifyDown2(size_t i) {
-    // TODO: complete this function
-    int next_up = i + 1;
-    while(nodes_[i].second > nodes_[next_up].second) {
-        Value temp = nodes_[next_up].second;
-        nodes_[next_up].second = nodes_[i].second;
-        nodes_[i].second = temp;
-        i++;
-        next_up++;
     }
 }
 
