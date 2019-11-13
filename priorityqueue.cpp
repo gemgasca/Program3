@@ -87,18 +87,6 @@ nlohmann::json PriorityQueue::JSON() const {
     return result;
 }
 
-void PriorityQueue::heapifyUp2(size_t i) {
-    // TODO: complete this function
-    int next_up = i - 1;
-    while (nodes_[i].second < nodes_[next_up].second){
-        Value temp = nodes_[next_up].second;
-        nodes_[next_up].second = nodes_[i].second;
-        nodes_[i].second = temp;
-        i--;
-        next_up--;
-    }
-}
-
 void PriorityQueue::heapifyUp(size_t i) {
     // TODO: complete this function
     while(i > 0){
