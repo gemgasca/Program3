@@ -2,6 +2,17 @@
 #include "json.hpp"
 #include "priorityqueue.h"
 
+// helper functions
+size_t PriorityQueue::Parent(size_t i) {       // returns parent
+    return i / 2;
+}
+size_t PriorityQueue::LeftChild(size_t i) {    // returns left child
+    return 2 * i;
+}
+size_t PriorityQueue::RightChild(size_t i) {   // returns right child
+    return 2 * i + 1;
+}
+
 PriorityQueue::PriorityQueue(std::size_t max_size) :
         nodes_(max_size + 1, KeyValuePair()),
         max_size_(max_size),
@@ -26,6 +37,10 @@ KeyValuePair PriorityQueue::min() {
 
 KeyValuePair PriorityQueue::removeMin() {
     // TODO: complete this function
+    if (isEmpty()){
+        return std::make_pair(0, std::make_pair(0, 0));     // returns empty pair if queue empty
+    }
+
     KeyValuePair pair = min();
     removeNode(1);
     return pair;
@@ -45,7 +60,7 @@ size_t PriorityQueue::size() const {
 
 nlohmann::json PriorityQueue::JSON() const {
     nlohmann::json result;
-    for (size_t i = 1; i <= size_; i++) {
+    for (size_t i = 1; i <= size(); i++) {
         nlohmann::json node;
         KeyValuePair kv = nodes_[i];
         node["key"] = kv.first;
@@ -80,6 +95,28 @@ void PriorityQueue::heapifyUp(size_t i) {
 
 void PriorityQueue::heapifyDown(size_t i) {
     // TODO: complete this function
+    while(i < size_) {
+        int LeftChild = 2 * i;
+        int RightChild = 2 * i + 1;
+        if (nodes_[LeftChild] < nodes_[RightChild]) {       // left child smaller, heapify down that branch
+            if (nodes_[LeftChild] < nodes_[i]) {
+                KeyValuePair temp = nodes_[LeftChild];
+                nodes_[LeftChild] = nodes_[i];
+                nodes_[i] = temp;
+            }
+        } else {       // right child smaller, heapify down that branch
+            if (nodes_[RightChild] < nodes_[i]) {
+                KeyValuePair temp = nodes_[RightChild];
+                nodes_[RightChild] = nodes_[i];
+                nodes_[i] = temp;
+            }
+        }
+        i++;
+    }
+}
+
+void PriorityQueue::heapifyDown2(size_t i) {
+    // TODO: complete this function
     int next_up = i + 1;
     while(nodes_[i].second > nodes_[next_up].second) {
         Value temp = nodes_[next_up].second;
@@ -88,19 +125,6 @@ void PriorityQueue::heapifyDown(size_t i) {
         i++;
         next_up++;
     }
-}
-
-void PriorityQueue::removeNode2(size_t i) {
-    // TODO: complete this function
-    nodes_.erase(nodes_.begin()+i);
-    for(size_t j = 1; j < size_ - 1; j++){
-        while(j >= i && j < size_ - 1){
-            nodes_[i] = nodes_[j];
-            i++;
-            j++;
-        }
-    }
-    size_--;
 }
 
 void PriorityQueue::removeNode(size_t i) {
@@ -114,13 +138,3 @@ Key PriorityQueue::getKey(size_t i) {
     return nodes_[i].first;
 }
 
-// helper functions
-int PriorityQueue::Parent(size_t i) {       // returns parent
-    return i / 2;
-}
-int PriorityQueue::LeftChild(size_t i) {    // returns left child
-    return 2 * i;
-}
-int PriorityQueue::RightChild(size_t i) {   // returns right child
-    return 2 * i + 1;
-}

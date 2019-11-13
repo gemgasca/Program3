@@ -19,9 +19,9 @@ class PriorityQueue {
     bool isEmpty() const;
     size_t size() const;
     nlohmann::json JSON() const;
-    int Parent(size_t i);
-    int LeftChild(size_t i);
-    int RightChild(size_t i);
+    size_t Parent(size_t i);
+    size_t LeftChild(size_t i);
+    size_t RightChild(size_t i);
 
 private:
     void heapifyUp(size_t i);
