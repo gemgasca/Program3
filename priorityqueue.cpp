@@ -31,20 +31,24 @@ void PriorityQueue::insert(Key k) {
 
 void PriorityQueue::insert(KeyValuePair kv) {
     // TODO: complete this function
-    nodes_[size_+1] = kv;
     size_++;
+    nodes_[size_] = kv;
     heapifyUp(size_-1);
 }
 
 KeyValuePair PriorityQueue::min() {
     // TODO: complete this function
+    if (isEmpty()){
+        throw std::underflow_error("Empty priority queue!");     // returns empty pair if queue empty
+    }
+
     return nodes_[ROOT];
 }
 
 KeyValuePair PriorityQueue::removeMin() {
     // TODO: complete this function
     if (isEmpty()){
-        return std::make_pair(0, std::make_pair(0, 0));     // returns empty pair if queue empty
+        throw std::underflow_error("Empty priority queue!");     // returns empty pair if queue empty
     }
 
     KeyValuePair pair = min();
@@ -91,7 +95,7 @@ void PriorityQueue::heapifyUp(size_t i) {
     // TODO: complete this function
     while(i > 0){
         int Parent  = 1/2;
-        if (nodes_[Parent] > nodes_[i]){
+        if (nodes_[Parent].first > nodes_[i].first){
             swap(Parent, i);
         }
         i--;
@@ -101,29 +105,28 @@ void PriorityQueue::heapifyUp(size_t i) {
 void PriorityQueue::heapifyDown(size_t i) {
     // TODO: complete this function
     while(i < size_) {
-        int LeftChild = 2 * i;
+        int LeftChild = 2 * i;                      // NEED TO CHECK IF NULL
         int RightChild = 2 * i + 1;
-        if (nodes_[LeftChild] < nodes_[RightChild]) {       // left child smaller, heapify down that branch
-            if (nodes_[LeftChild] < nodes_[i]) {
+        if ((LeftChild <= size_) && (RightChild <= size_) && (nodes_[LeftChild].first < nodes_[RightChild].first)){
+            if (nodes_[LeftChild].first < nodes_[i].first) {       // left child smaller, heapify down that branch
                 swap(LeftChild, i);
             }
-        } else {                                            // right child smaller, heapify down that branch
-            if (nodes_[RightChild] < nodes_[i]) {
-                swap(RightChild, i);
-            }
         }
+        else if ((RightChild <= size_) && (nodes_[RightChild].first < nodes_[i].first)) {        // right child smaller, heapify down that branch
+            swap(RightChild, i);
+        }
+
         i++;
     }
-}
 
 void PriorityQueue::removeNode(size_t i) {
     // TODO: complete this function
-    nodes_[i] = nodes_[size_];
-    heapifyDown(i);
+    nodes_[i] = nodes_[size_];          // sets pos to last element in array
+    // nodes_.erase(nodes_.end());         // erases last element in array
+    heapifyDown(i);                     // calls heapify down to move root to correct position
 }
 
 Key PriorityQueue::getKey(size_t i) {
     // TODO: complete this function
     return nodes_[i].first;
 }
-
