@@ -43,7 +43,7 @@ void PriorityQueue::swap(int kv1, int kv2) {
 void PriorityQueue::removeDupPlayers(Value val){
     int value1 = val.first;
     int value2 = val.second;
-    for (int i = 1; i <= size_; i++){       // iterates over every node
+    for (size_t i = 1; i <= size_; i++){       // iterates over every node
         Value posDup = getValues(i);           // gets values for that node
         if (posDup.first == value1 || posDup.first == value2 || posDup.second == value1 || posDup.second == value2){
             removeNode(i);          // removes node if nay of the values match
@@ -125,29 +125,6 @@ void PriorityQueue::heapifyUp(size_t i) {
         i = Parent(i);
     }
 }
-
-//void PriorityQueue::heapifyDown(size_t i){
-//    // TODO: complete this function
-//    while (i <= size_) {
-//        size_t left = LeftChild(i);
-//        size_t right = RightChild(i);
-//        if (hasLeftChild(i) && hasRightChild(i)) {
-//            if (nodes_[left].first < nodes_[right].first && (nodes_[left].first < nodes_[i].first)) {       // left child smaller than current, heapify down that branch
-//                swap(left, i);
-//            }
-//            else if (nodes_[right].first < nodes_[i].first) {        // right child smaller than current, heapify down that branch
-//                swap(right, i);
-//            }
-//        }
-//        else if (hasLeftChild(i) && (nodes_[left].first < nodes_[i].first)){ // left child smaller than current, heapify down that branch
-//            swap(left, i);
-//        }
-//        else if (hasRightChild(i) && (nodes_[right].first < nodes_[i].first)){          // only has right
-//            swap(right, i);
-//        }
-//        i++;
-//    }
-//}
 
 void PriorityQueue::heapifyDown(size_t i){
     // TODO: complete this function
