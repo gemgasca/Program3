@@ -118,13 +118,11 @@ nlohmann::json PriorityQueue::JSON() const {
 
 void PriorityQueue::heapifyUp(size_t i) {
     // TODO: complete this function
-    int Parent  = i/2;
     while((i > 0) && hasParent(i)){
-        if (nodes_[Parent].first > nodes_[i].first){
-            swap(Parent, i);
+        if (nodes_[Parent(i)].first > nodes_[i].first){
+            swap(Parent(i), i);
         }
-        i--;
-        int Parent  = i/2;
+        i = Parent(i);
     }
 }
 
@@ -151,28 +149,23 @@ void PriorityQueue::heapifyUp(size_t i) {
 //    }
 //}
 
-//void PriorityQueue::heapifyDown(size_t i){
-//    // TODO: complete this function
-//    while (hasLeftChild(i)){           // has at least right child
-//        size_t left = LeftChild(i);
-//        size_t right = RightChild(i);
-//        size_t child = left;        // the child to be swapped with
-//        if (hasRightChild(i) && nodes_[left].first > nodes_[right].first){      // if right exists, and is smaller
-//            child = right;
-//        }
-//
-//        if (nodes_[child].first < nodes_[i].first){         // if child is smaller than current node, swap
-//            swap(child, i);
-//        }
-//        else{
-//            break;
-//        }
-//        i = child;
-//    }
-//}
-
-
 void PriorityQueue::heapifyDown(size_t i){
+    // TODO: complete this function
+    while(hasLeftChild(i)){                     // checks if has left child at least
+        int small_child = LeftChild(i);
+        if(hasRightChild(i) && nodes_[RightChild(i)].first < nodes_[LeftChild(i)].first){       // checks if has right child and is smaller than left
+            small_child = RightChild(i);
+        }
+
+        if (nodes_[small_child].first < nodes_[i].first){       // if node is smaller than current, swap
+            swap(small_child, i);
+        }
+        else{           // don't have to heapify anymore, since rest of tree should be in order
+            break;
+        }
+
+        i = small_child;
+    }
 }
 
 

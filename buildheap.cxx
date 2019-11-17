@@ -5,14 +5,13 @@
 #include "priorityqueue.h"
 
 int main(int argc, char** argv) {
-    nlohmann::json jsonInput;           // creates input object
+    nlohmann::json jsonInput;   // creates input object
 
-    std::string json_name = argv[2];    // opens argument file
-    std::ifstream json_file;
-    json_file.open(json_name);
+    std::ifstream json_file;    // opens argument file
+    json_file.open(argv[2]);
 
     if (json_file.is_open()) {
-        json_file >> jsonInput;             // makes sure file is open, then reads json data into object
+        json_file >> jsonInput;         // makes sure file is open, then reads json data into object
     }
     else{
         std::cout << "Error: File Not Open. Exiting..." << std::endl;
@@ -22,11 +21,9 @@ int main(int argc, char** argv) {
     int maxHeapSize = jsonInput["metadata"]["maxHeapSize"];            // metadata
     int numOperations = jsonInput["metadata"]["numOperations"];
 
-    // create a priority queue object
-    PriorityQueue pq = PriorityQueue(maxHeapSize);
+    PriorityQueue pq = PriorityQueue(maxHeapSize);    // create a priority queue object
 
     for(auto elem: jsonInput){
-//        std::cout << elem << std::endl;
         try{
             double key = elem["key"];                           // insert code here
             pq.insert(key);
