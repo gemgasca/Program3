@@ -22,7 +22,7 @@ bool PriorityQueue::hasLeftChild(size_t i){
 }
 
 bool PriorityQueue::hasParent(size_t i){
-    return (Parent(i) < 0);
+    return (Parent(i) > 0);
 }
 
 Key PriorityQueue::getKey(size_t i) {
@@ -44,8 +44,8 @@ void PriorityQueue::removeDupPlayers(Value val){
     int value1 = val.first;
     int value2 = val.second;
     for (int i = 1; i <= size_; i++){       // iterates over every node
-        Value pos = getValues(i);           // gets values for that node
-        if (pos.first == value1 || pos.first == value2 || pos.second == value1 || pos.second == value2){
+        Value posDup = getValues(i);           // gets values for that node
+        if (posDup.first == value1 || posDup.first == value2 || posDup.second == value1 || posDup.second == value2){
             removeNode(i);          // removes node if nay of the values match
         }
     }
@@ -79,7 +79,7 @@ KeyValuePair PriorityQueue::removeMin() {
     }
 
     KeyValuePair pair = min();
-    removeNode(1);
+    removeNode(ROOT);
     return pair;
 }
 
@@ -118,7 +118,7 @@ nlohmann::json PriorityQueue::JSON() const {
 
 void PriorityQueue::heapifyUp(size_t i) {
     // TODO: complete this function
-    while((i > 0) && hasParent(i)){
+    while(hasParent(i)){
         if (nodes_[Parent(i)].first > nodes_[i].first){
             swap(Parent(i), i);
         }
