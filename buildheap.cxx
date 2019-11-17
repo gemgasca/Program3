@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
     int numOperations = jsonInput["metadata"]["numOperations"];
 
     // create a priority queue object
-    PriorityQueue pq = PriorityQueue(maxHeapSize);              // creates new priority queue
+    PriorityQueue pq = PriorityQueue(maxHeapSize);
 
     for(auto elem: jsonInput){
 //        std::cout << elem << std::endl;
@@ -44,6 +44,8 @@ int main(int argc, char** argv) {
     }
 
     nlohmann::json result = pq.JSON();
+    result["metadata"]["maxHeapSize"] = maxHeapSize;
+    result["metadata"]["numOperations"] = numOperations;
     std::cout << result.dump(2);
 
     json_file.close();
