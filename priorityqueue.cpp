@@ -104,25 +104,28 @@ void PriorityQueue::heapifyUp(size_t i) {
 
 void PriorityQueue::heapifyDown(size_t i) {
     // TODO: complete this function
-    while(i < size_) {
+    while (i < size_) {
         int LeftChild = 2 * i;                      // NEED TO CHECK IF NULL
         int RightChild = 2 * i + 1;
-        if ((LeftChild <= size_) && (RightChild <= size_) && (nodes_[LeftChild].first < nodes_[RightChild].first)){
+        if ((LeftChild <= size_) && (RightChild <= size_) && (nodes_[LeftChild].first < nodes_[RightChild].first)) {
             if (nodes_[LeftChild].first < nodes_[i].first) {       // left child smaller, heapify down that branch
                 swap(LeftChild, i);
             }
-        }
-        else if ((RightChild <= size_) && (nodes_[RightChild].first < nodes_[i].first)) {        // right child smaller, heapify down that branch
+        } else if ((RightChild <= size_) && (nodes_[RightChild].first <
+                                             nodes_[i].first)) {        // right child smaller, heapify down that branch
             swap(RightChild, i);
         }
-
+        else{
+            return;
+        }
         i++;
     }
+}
 
 void PriorityQueue::removeNode(size_t i) {
     // TODO: complete this function
     nodes_[i] = nodes_[size_];          // sets pos to last element in array
-    // nodes_.erase(nodes_.end());         // erases last element in array
+    nodes_[size_].first = 0;
     heapifyDown(i);                     // calls heapify down to move root to correct position
 }
 

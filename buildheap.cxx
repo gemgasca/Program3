@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     PriorityQueue pq = PriorityQueue(maxHeapSize);              // creates new priority queue
 
     for(auto elem: jsonInput){
-        std::cout << elem << std::endl;
+//        std::cout << elem << std::endl;
         try{
             double key = elem["key"];                           // insert code here
             pq.insert(key);
@@ -43,7 +43,8 @@ int main(int argc, char** argv) {
         }
     }
 
-    pq.JSON();
+    nlohmann::json result = pq.JSON();
+    std::cout << result.dump(2);
 
     json_file.close();
 
